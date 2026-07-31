@@ -15,6 +15,7 @@ import io.github.tomhula.jecnaapi.web.AuthenticationException
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
@@ -46,7 +47,7 @@ class WebJecnaClient(
     val endpoint = endpoint.removeSuffix("/")
     
     private val cookieStorage = AcceptAllCookiesStorage()
-    private val httpClient = HttpClient {
+    private val httpClient = createHttpClient {
         install(HttpCookies) { storage = cookieStorage }
         defaultRequest {
             url(this@WebJecnaClient.endpoint)
@@ -311,3 +312,5 @@ class WebJecnaClient(
  * [append] extension function on [ParametersBuilder], that takes [Pair] as a parameter.
  */
 private fun ParametersBuilder.append(pair: Pair<String, Any>) = append(pair.first, pair.second.toString())
+
+expect fun createHttpClient(block: HttpClientConfig<*>.() -> Unit): HttpClient
