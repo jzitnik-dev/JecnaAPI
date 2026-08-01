@@ -36,7 +36,7 @@ class WebCanteenClient(
     val endpoint = endpoint.removeSuffix("/")
     
     private val cookieStorage = AcceptAllCookiesStorage()
-    private val httpClient = HttpClient {
+    private val httpClient = createHttpClient {
         install(HttpCookies) { storage = cookieStorage }
         defaultRequest {
             url {
@@ -287,3 +287,5 @@ class WebCanteenClient(
         private const val WEB_PATH = "faces/secured/mobile.jsp"
     }
 }
+
+expect fun createHttpClient(block: HttpClientConfig<*>.() -> Unit): HttpClient
