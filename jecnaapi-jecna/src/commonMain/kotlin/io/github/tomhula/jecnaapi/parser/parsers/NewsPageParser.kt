@@ -92,6 +92,7 @@ internal object NewsPageParser
     {
         val label = articleFileEle.selectFirstOrThrow(".label").text()
         val downloadPath = articleFileEle.attr("href")
+        println("DOWNLOAD PATH: $downloadPath")
 
         return ArticleFile(label, downloadPath)
     }
